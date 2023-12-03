@@ -1,8 +1,10 @@
 return {
-    "theprimeagen/harpoon",
+    "ThePrimeagen/harpoon",
+    dependencies = {
+		"nvim-lua/plenary.nvim",
+	},
     config = function()
-        local mark = require("harpoon.mark")
-        local ui = require("harpoon.ui")
+        local harpoon = require('harpoon')
 
         -- vim.cmd('highlight! HarpoonInactive guibg=NONE guifg=#63698c')
         -- vim.cmd('highlight! HarpoonActive guibg=NONE guifg=white')
@@ -10,7 +12,7 @@ return {
         -- vim.cmd('highlight! HarpoonNumberInactive guibg=NONE guifg=#7aa2f7')
         -- vim.cmd('highlight! TabLineFill guibg=NONE guifg=white')
 
-        vim.keymap.set("n", "<leader>a", mark.add_file)
-        vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
+        vim.keymap.set("n", "<leader>a", function() harpoon:list():append() end) 
+        vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
     end
 }
