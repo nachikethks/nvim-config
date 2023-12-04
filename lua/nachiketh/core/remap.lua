@@ -8,8 +8,8 @@ vim.keymap.set("n", "<leader>te", "<cmd>:term<CR>")
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
-vim.keymap.set("n", "<leader>j", ":bp<CR>", { silent = true })
-vim.keymap.set("n", "<leader>k", ":bn<CR>", { silent = true })
+vim.keymap.set("n", "<leader>j", ":bp<CR>", { desc = "Prev buffer", silent = true })
+vim.keymap.set("n", "<leader>k", ":bn<CR>", { desc = "Next buffer", silent = true })
 
 vim.keymap.set("n", "<leader>xs", vim.diagnostic.open_float, { desc = "Open floating diagnostic window" })
 
@@ -32,3 +32,8 @@ end
 
 vim.api.nvim_create_autocmd("InsertEnter", { command = "set norelativenumber", pattern = "*" })
 vim.api.nvim_create_autocmd("InsertLeave", { command = "set relativenumber", pattern = "*" })
+
+vim.keymap.set("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
+vim.keymap.set("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
+vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
+vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
