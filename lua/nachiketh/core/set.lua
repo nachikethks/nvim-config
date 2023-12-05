@@ -36,3 +36,5 @@ vim.opt.cursorline = true
 
 vim.opt.virtualedit = "block"
 vim.opt.completeopt = "menu,menuone,noselect"
+
+vim.opt.clipboard = "unnamedplus"
