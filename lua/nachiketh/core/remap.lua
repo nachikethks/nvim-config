@@ -14,6 +14,20 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+-- Keep the cursor centered while scrolling
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+
+-- Keep the cursor centered while /search
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
+
+-- Select and paste without loosing copied text in register
+vim.keymap.set("x", "<leader>p", [["_dP]])
+
+-- Delete text to void register
+vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
+
 -- Build and execute
 local lang_maps = {
 	cpp = { build = "g++ % -o %:r", exec = "./%:r" },

@@ -21,7 +21,7 @@ vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
-vim.opt.undolevels = 10000
+vim.opt.undolevels = 50000
 
 -- Search
 vim.opt.hlsearch = false
