@@ -38,7 +38,7 @@ for lang, data in pairs(lang_maps) do
 	if data.build ~= nil then
 		vim.api.nvim_create_autocmd(
 			"FileType",
-			{ command = "nnoremap <leader>bb :!" .. data.build .. "<CR>", pattern = lang }
+			{ command = "nnoremap <leader>bu :!" .. data.build .. "<CR>", pattern = lang }
 		)
 	end
 	vim.api.nvim_create_autocmd(
