@@ -81,6 +81,16 @@ return {
             local lsp_attach = function(client, bufnr)
                 local opts = { buffer = bufnr }
                 local builtin = require('telescope.builtin')
+                lsp_zero.ui({
+                    float_border = 'rounded',
+                    sign_text = {
+                        error = '✘',
+                        warn = '▲',
+                        hint = '⚑',
+                        info = '»',
+                    },
+                })
+                lsp_zero.highlight_symbol(client, bufnr)
 
                 vim.keymap.set('n', '<leader>hi', '<cmd>lua vim.lsp.buf.hover()<cr>',
                     vim.tbl_extend('force', opts, { desc = "Display Signature Info" }))
