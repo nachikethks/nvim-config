@@ -16,7 +16,7 @@ return {
                 "pyright"
             }
         },
-        config = function (_, opts)
+        config = function(_, opts)
             require('mason').setup(opts)
         end
     },
@@ -26,7 +26,7 @@ return {
         'hrsh7th/nvim-cmp',
         event = 'InsertEnter',
         dependencies = {
-            {'L3MON4D3/LuaSnip'},
+            { 'L3MON4D3/LuaSnip' },
         },
 
         opts = function(_, opts)
@@ -42,13 +42,14 @@ return {
 
             cmp.setup({
                 sources = {
-                    {name = 'nvim_lsp'},
+                    { name = 'nvim_lsp' },
+                    { name = 'luasnip' },
                 },
                 mapping = cmp.mapping.preset.insert({
                     ['<C-Space>'] = cmp.mapping.complete(),
                     ["<Tab>"] = cmp.mapping.confirm({ select = true }),
-					["<C-k>"] = cmp.mapping.select_prev_item(cmp_select),
-					["<C-j>"] = cmp.mapping.select_next_item(cmp_select),
+                    ["<C-k>"] = cmp.mapping.select_prev_item(cmp_select),
+                    ["<C-j>"] = cmp.mapping.select_next_item(cmp_select),
                     ['<C-u>'] = cmp.mapping.scroll_docs(-4),
                     ['<C-d>'] = cmp.mapping.scroll_docs(4),
                 }),
@@ -64,12 +65,12 @@ return {
     -- LSP
     {
         'neovim/nvim-lspconfig',
-        cmd = {'LspInfo', 'LspInstall', 'LspStart'},
-        event = {'BufReadPre', 'BufNewFile'},
+        cmd = { 'LspInfo', 'LspInstall', 'LspStart' },
+        event = { 'BufReadPre', 'BufNewFile' },
         dependencies = {
-            {'hrsh7th/cmp-nvim-lsp'},
-            {'williamboman/mason.nvim'},
-            {'williamboman/mason-lspconfig.nvim'},
+            { 'hrsh7th/cmp-nvim-lsp' },
+            { 'williamboman/mason.nvim' },
+            { 'williamboman/mason-lspconfig.nvim' },
         },
         config = function()
             local lsp_zero = require('lsp-zero')
@@ -78,20 +79,34 @@ return {
             -- if there is a language server active in the file
 
             local lsp_attach = function(client, bufnr)
-                local opts = {buffer = bufnr}
+                local opts = { buffer = bufnr }
+                local builtin = require('telescope.builtin')
 
-                vim.keymap.set('n', '<leader>hi', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
-                vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-                vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
-                vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
-                vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
-                vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
-                vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
+                vim.keymap.set('n', '<leader>hi', '<cmd>lua vim.lsp.buf.hover()<cr>',
+                    vim.tbl_extend('force', opts, { desc = "Display Signature Info" }))
+
+                vim.keymap.set('n', '<leader>ds', builtin.lsp_document_symbols,
+                    { desc = "Find current document symbols" })
+                vim.keymap.set('n', '<leader>ws', builtin.lsp_dynamic_workspace_symbols,
+                    { desc = "Find workspace symbols" })
+
+                vim.keymap.set('n', 'gd', builtin.lsp_definitions,
+                    vim.tbl_extend('force', opts, { desc = "Goto Definition" }))
+                vim.keymap.set('n', 'gi', builtin.lsp_implementations,
+                    vim.tbl_extend('force', opts, { desc = "Goto Implementation" }))
+                vim.keymap.set('n', 'gr', builtin.lsp_references,
+                    vim.tbl_extend('force', opts, { desc = "Goto References" }))
+                vim.keymap.set('n', '<leader>D', builtin.lsp_type_definitions,
+                    vim.tbl_extend('force', opts, { desc = "Type Definition" }))
+                vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>',
+                    vim.tbl_extend('force', opts, { desc = "Goto Declaration" }))
+                vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>',
+                    vim.tbl_extend('force', opts, { desc = "Display Signature Info" }))
+
+
                 vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-                vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
+                vim.keymap.set({ 'n', 'x' }, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
                 vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
-                vim.keymap.set('n', '<leader>fds', require('telescope.builtin').lsp_document_symbols)
-                vim.keymap.set('n', '<leader>fws', require('telescope.builtin').lsp_dynamic_workspace_symbols)
             end
 
             lsp_zero.extend_lspconfig({
@@ -101,7 +116,7 @@ return {
             })
 
             require('mason-lspconfig').setup({
-                ensure_installed = {'ruff', 'pyright'},
+                ensure_installed = { 'ruff', 'pyright' },
                 handlers = {
                     -- this first function is the "default handler"
                     -- it applies to every language server without a "custom handler"

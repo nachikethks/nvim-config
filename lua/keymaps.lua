@@ -4,8 +4,8 @@ vim.api.nvim_set_keymap('n', '<Esc>', '<CR>:noh<CR>', { silent = true })
 vim.api.nvim_set_keymap('n', '<leader>wr', ':set wrap!<CR>', { noremap = true, silent = true, desc = "Toggle Line Wrap" })
 
 -- Buffer Navigation
-vim.keymap.set("n", "<leader>bn", ":bn<CR>", { desc = "Next buffer", silent = true }) -- next buffer
-vim.keymap.set("n", "<leader>bp", ":bp<CR>", { desc = "Prev buffer", silent = true }) -- prev buffer
+vim.keymap.set("n", "<leader>bn", ":bn<CR>", { desc = "Next buffer", silent = true })   -- next buffer
+vim.keymap.set("n", "<leader>bp", ":bp<CR>", { desc = "Prev buffer", silent = true })   -- prev buffer
 vim.keymap.set("n", "<leader>bb", ":e #<CR>", { desc = "Other buffer", silent = true }) -- switch to other buffer
 
 -- Move selected text UP and DOWN
@@ -23,13 +23,13 @@ vim.api.nvim_set_keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, si
 vim.api.nvim_set_keymap("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Better HJKL mappings
-vim.api.nvim_set_keymap('n', 'H', '^', { noremap = true, silent = true })  -- Move to the beginning of the line
-vim.api.nvim_set_keymap('n', 'L', '$', { noremap = true, silent = true })  -- Move to the end of the line
-vim.api.nvim_set_keymap('n', 'J', '}', { noremap = true, silent = true })  -- Move to the next paragraph
-vim.api.nvim_set_keymap('n', 'K', '{', { noremap = true, silent = true })  -- Move to the previous paragraph
+vim.api.nvim_set_keymap('n', 'H', '^', { noremap = true, silent = true }) -- Move to the beginning of the line
+vim.api.nvim_set_keymap('n', 'L', '$', { noremap = true, silent = true }) -- Move to the end of the line
+vim.api.nvim_set_keymap('n', 'J', '}', { noremap = true, silent = true }) -- Move to the next paragraph
+vim.api.nvim_set_keymap('n', 'K', '{', { noremap = true, silent = true }) -- Move to the previous paragraph
 
 -- Better escape in insert mode
-vim.api.nvim_set_keymap('i', 'jk', '<Esc>', { noremap = true, silent = true })  -- Use 'jk' to escape insert mode
+vim.api.nvim_set_keymap('i', 'jk', '<Esc>', { noremap = true, silent = true }) -- Use 'jk' to escape insert mode
 
 -- Keep text selected when pressing Shift + < or Shift + >
 vim.api.nvim_set_keymap('v', '>', '>gv', { noremap = true, silent = true })
@@ -51,21 +51,21 @@ vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 
 -- Build and execute
 local lang_maps = {
-	cpp = { build = "g++ % -o %:r", exec = "./%:r" },
-	python = { exec = "python %" },
-	java = { build = "javac %", exec = "java %" },
+    cpp = { build = "g++ % -o %:r", exec = "./%:r" },
+    python = { exec = "python %" },
+    java = { build = "javac %", exec = "java %" },
 }
 for lang, data in pairs(lang_maps) do
-	if data.build ~= nil then
-		vim.api.nvim_create_autocmd(
-			"FileType",
-			{ command = "nnoremap <leader>bu :!" .. data.build .. "<CR>", pattern = lang }
-		)
-	end
-	vim.api.nvim_create_autocmd(
-		"FileType",
-		{ command = "nnoremap <leader>ex :split<CR>:ter " .. data.exec .. "<CR>", pattern = lang }
-	)
+    if data.build ~= nil then
+        vim.api.nvim_create_autocmd(
+            "FileType",
+            { command = "nnoremap <leader>bu :!" .. data.build .. "<CR>", pattern = lang }
+        )
+    end
+    vim.api.nvim_create_autocmd(
+        "FileType",
+        { command = "nnoremap <leader>ex :split<CR>:ter " .. data.exec .. "<CR>", pattern = lang }
+    )
 end
 
 -- Toggle Relative Line Number in Insert and Visual Mode
