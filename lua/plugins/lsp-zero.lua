@@ -1,5 +1,17 @@
 return {
     {
+        "L3MON4D3/LuaSnip",
+        version = "v2.*",
+        build = "make install_jsregexp",
+        dependencies = {
+            "rafamadriz/friendly-snippets",
+        },
+
+        config = function()
+            require("luasnip.loaders.from_vscode").lazy_load()
+        end,
+    },
+    {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v4.x',
         lazy = true,
@@ -27,19 +39,15 @@ return {
         event = 'InsertEnter',
         dependencies = {
             { 'L3MON4D3/LuaSnip' },
-            { 'onsails/lspkind.nvim' }
+            { 'onsails/lspkind.nvim' },
+            {'rafamadriz/friendly-snippets'},
+            {'saadparwaiz1/cmp_luasnip'}
         },
 
-        opts = function(_, opts)
-            table.insert(opts.sources, 1, {
-                name = "codeium",
-                group_index = 1,
-                priority = 100,
-            })
-        end,
         config = function()
             local cmp = require('cmp')
             local lspkind = require('lspkind')
+            local luasnip = require('luasnip')
             local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
             local kind_icons = {
@@ -68,6 +76,7 @@ return {
                 Event = "",
                 Operator = "󰆕",
                 TypeParameter = "󰅲",
+                Codeium = "",
             }
 
             cmp.setup({
@@ -83,27 +92,45 @@ return {
                             luasnip = "[LuaSnip]",
                             nvim_lua = "[Lua]",
                             latex_symbols = "[LaTeX]",
+                            codeium = "[Codeium]"
                         })[entry.source.name]
                         return vim_item
                     end
                 },
-                sources = {
-                    { name = 'nvim_lsp' },
-                    { name = 'luasnip' },
+                snippet = {
+                    expand = function(args)
+                        require('luasnip').lsp_expand(args.body)
+                    end,
                 },
+                sources = cmp.config.sources({
+                    { name = 'luasnip' },  -- Snippet completions
+                    { name = 'codeium' },  -- Codeium completions
+                    { name = 'nvim_lsp' }, -- LSP completions
+                    { name = 'buffer' },   -- Buffer completions
+                    { name = 'path' },     -- File path completions
+                    { name = 'nvim_lua' }, -- Lua completions
+                    { name = 'calc' },     -- Calculator completions
+                }),
+
                 mapping = cmp.mapping.preset.insert({
                     ['<C-Space>'] = cmp.mapping.complete(),
-                    ["<Tab>"] = cmp.mapping.confirm({ select = true }),
+                    ["<Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.confirm({ select = true })
+                        elseif luasnip.expand_or_jumpable() then
+                            luasnip.expand_or_jump()
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
+                    ["<S-Tab>"] = cmp.mapping(function(fallback)
+                        if luasnip.jumpable(-1) then luasnip.jump(-1) else fallback() end
+                    end, { "i", "s" }),
                     ["<C-k>"] = cmp.mapping.select_prev_item(cmp_select),
                     ["<C-j>"] = cmp.mapping.select_next_item(cmp_select),
                     ['<C-u>'] = cmp.mapping.scroll_docs(-4),
                     ['<C-d>'] = cmp.mapping.scroll_docs(4),
                 }),
-                snippet = {
-                    expand = function(args)
-                        vim.snippet.expand(args.body)
-                    end,
-                },
             })
         end
     },
@@ -114,6 +141,8 @@ return {
         cmd = { 'LspInfo', 'LspInstall', 'LspStart' },
         event = { 'BufReadPre', 'BufNewFile' },
         dependencies = {
+            {'rafamadriz/friendly-snippets'},
+            { 'L3MON4D3/LuaSnip' },
             { 'hrsh7th/cmp-nvim-lsp' },
             { 'williamboman/mason.nvim' },
             { 'williamboman/mason-lspconfig.nvim' },

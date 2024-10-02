@@ -10,9 +10,6 @@ return {
         { "}",         "<cmd>AerialNext<CR>",    desc = "Aerial Next" }
     },
     opts = {
-        layout = {
-            max_width = { 20, 0.15 },
-        },
         backends = { 'treesitter', 'lsp' },
     }
 }
