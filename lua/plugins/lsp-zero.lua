@@ -21,6 +21,14 @@ return {
         'williamboman/mason.nvim',
         lazy = false,
         opts = {
+            ui = {
+                border = "rounded",
+                icons = {
+                    package_pending = " ",
+                    package_installed = " ",
+                    package_uninstalled = " ",
+                },
+            },
             ensure_installed = {
                 "mypy",
                 "black",
@@ -40,13 +48,12 @@ return {
         dependencies = {
             { 'L3MON4D3/LuaSnip' },
             { 'onsails/lspkind.nvim' },
-            {'rafamadriz/friendly-snippets'},
-            {'saadparwaiz1/cmp_luasnip'}
+            { 'rafamadriz/friendly-snippets' },
+            { 'saadparwaiz1/cmp_luasnip' }
         },
 
         config = function()
             local cmp = require('cmp')
-            local lspkind = require('lspkind')
             local luasnip = require('luasnip')
             local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
@@ -141,7 +148,7 @@ return {
         cmd = { 'LspInfo', 'LspInstall', 'LspStart' },
         event = { 'BufReadPre', 'BufNewFile' },
         dependencies = {
-            {'rafamadriz/friendly-snippets'},
+            { 'rafamadriz/friendly-snippets' },
             { 'L3MON4D3/LuaSnip' },
             { 'hrsh7th/cmp-nvim-lsp' },
             { 'williamboman/mason.nvim' },

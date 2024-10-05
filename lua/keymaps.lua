@@ -1,12 +1,19 @@
 vim.api.nvim_set_keymap('n', '<Esc>', '<CR>:noh<CR>', { silent = true })
 
+vim.api.nvim_set_keymap('n', '<C-a>', '<cmd> %y+ <cr>', { silent = true, desc = "Copy entire file" })
+vim.api.nvim_set_keymap('n', '<leader>nb', '<cmd> enew <cr>', { silent = true, desc = "buffer new" })
+
+
 -- Toggle line wrap
 vim.api.nvim_set_keymap('n', '<leader>wr', ':set wrap!<CR>', { noremap = true, silent = true, desc = "Toggle Line Wrap" })
 
 -- Buffer Navigation
-vim.keymap.set("n", "<leader>bn", ":bn<CR>", { desc = "Next buffer", silent = true })   -- next buffer
-vim.keymap.set("n", "<leader>bp", ":bp<CR>", { desc = "Prev buffer", silent = true })   -- prev buffer
-vim.keymap.set("n", "<leader>bb", ":e #<CR>", { desc = "Other buffer", silent = true }) -- switch to other buffer
+vim.keymap.set("n", "<Tab>", ":BufferLineCycleNext<CR>", { desc = "Next buffer", silent = true })   -- next buffer
+vim.keymap.set("n", "<S-Tab>", ":BufferLineCyclePrev<CR>", { desc = "Prev buffer", silent = true })   -- prev buffer
+vim.keymap.set("n", "<S-right>", ":BufferLineMoveNext<CR>", { desc = "Next buffer", silent = true })   -- next buffer
+vim.keymap.set("n", "<S-left>", ":BufferLineMovePrev<CR>", { desc = "Prev buffer", silent = true })   -- prev buffer
+vim.keymap.set("n", "<leader>bb", ":e #<CR>", { desc = "Previous buffer", silent = true }) -- switch to other buffer
+vim.keymap.set('n', '<leader>bx', ":bdelete<CR>", { desc = "Close buffer", silent = true })
 
 -- Move selected text UP and DOWN
 vim.api.nvim_set_keymap("v", "J", ":m '>+1<CR>gv=gv", { silent = true })
@@ -75,6 +82,7 @@ vim.api.nvim_create_autocmd("InsertLeave", { command = "set relativenumber", pat
 -- Window resizing
 vim.keymap.set("n", "<leader>sv", ":vsplit<CR>", { desc = "Split Window Verically" })
 vim.keymap.set("n", "<leader>sh", ":split<CR>", { desc = "Split Window Horizontally" })
+vim.keymap.set("n", "<leader>sx", ":q<CR>", { desc = "Close split" })
 vim.keymap.set("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
 vim.keymap.set("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
 vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })

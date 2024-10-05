@@ -1,30 +1,57 @@
 return {
     "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = { "nvim-tree/nvim-web-devicons", "arkav/lualine-lsp-progress" },
     event = "VeryLazy",
     config = function()
         local lualine = require("lualine")
         local lazy_status = require("lazy.status")
-        local aerial = require("aerial")
+
+        local function get_root_dir()
+            local root = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
+            return '   ' .. root  -- Add an icon before the root directory name
+        end
 
         lualine.setup({
             options = {
                 theme = "auto",
                 component_separators = "|",
-                section_separators = { left = "", right = "" },
+                section_separators = { left = " ", right = " " },
+                globalstatus = true, -- Use a single statusline
             },
             sections = {
                 lualine_a = {
-                    { "mode", separator = { left = "" }, right_padding = 2 },
+                    { "mode", icon = "" },
                 },
-                lualine_b = { "filename", "diff", "branch" },
-                lualine_c = {
-                    { "searchcount", icon = " " },
+                lualine_b = {
                     {
-                        lazy_status.updates,
-                        cond = lazy_status.has_updates,
-                        color = { fg = "#ff9e64" },
+                        "filetype",
+                        icon_only = true,
+                        separator = "",
+                        padding = { left = 1, right = 0 },
                     },
+                    {
+                        "filename",
+                        padding = { left = 0, right = 1 },
+                        symbols = {
+                            modified = "  ",
+                            readonly = "  ",
+                            unnamed = "",
+                            new_file = "  "
+                        }
+                    }
+                },
+                lualine_c = {
+                    { "branch", icon = "" },
+                    {
+                        "diff",
+                        symbols = { added = " ", modified = " ", removed = " " },
+                        diff_color = {
+                            added = { fg = "#98c379" },
+                            modified = { fg = "#e5c07b" },
+                            removed = { fg = "#e06c75" },
+                        },
+                        cond = lazy_status.has_changes
+                    }
                 },
                 lualine_x = {
                     {
@@ -51,48 +78,33 @@ return {
                         update_in_insert = false, -- Update diagnostics in insert mode.
                         always_visible = false,   -- Show diagnostics even if there are none.
                     },
+                    { "searchcount", icon = "" },
+                    {
+                        'lsp_progress',
+                        separators = {
+                            component = ' ',
+                            progress = ' | ',
+                            percentage = { pre = '', post = '%% ' },
+                            title = { pre = '', post = ': ' },
+                            lsp_client_name = { pre = '  LSP ~ ', post = '' },
+                            spinner = { pre = '', post = '' },
+                            message = {  pre = '(', post = ')', commenced = 'In Progress', completed = 'Completed' },
+                        },
+                        display_components = { 'lsp_client_name', 'spinner', { 'title', 'percentage', 'message' } },
+                        timer = { progress_enddelay = 1000, spinner = 1000, lsp_client_name_enddelay = 1000 * 60 * 60 * 24 },
+                        spinner_symbols = { '🌑 ', '🌒 ', '🌓 ', '🌔 ', '🌕 ', '🌖 ', '🌗 ', '🌘 ' },
+                    }
                 },
-                lualine_y = { "encoding", "filetype" },
+                lualine_y = {
+                    { "progress", icon = ""},
+                    { "location", icon = ""},
+                },
                 lualine_z = {
-                    { "progress" },
-                    { "location", separator = { right = "" }, left_padding = 2 },
+                    get_root_dir,
                 },
-            },
-            inactive_sections = {
-                lualine_a = { "filename" },
-                lualine_b = {},
-                lualine_c = {},
-                lualine_x = {},
-                lualine_y = {},
-                lualine_z = { "progress", "location" },
             },
             tabline = {},
-            winbar = {
-                -- lualine_a = {
-                --     {
-                --         function()
-                --             local breadcrumbs = aerial.get_location()
-                --             local current_file = vim.api.nvim_buf_get_name(0)
-                --             local project_root = vim.fn.getcwd()
-                --             -- Escape special characters in the project_root to prevent pattern issues
-                --             local escaped_project_root = project_root:gsub("([%.%+%-%*%?%[%]%^%$%(%)%%])", "%%%1") .. "/"
-                --
-                --             -- Substitute the project_root part from current_file to get the relative path
-                --             local relative_path = current_file:gsub(escaped_project_root, "")
-                --             print(vim.inspect(breadcrumbs))
-                --
-                --             for i, item in ipairs(breadcrumbs) do
-                --                 relative_path = relative_path .. " " .. item.icon .. " " .. item.name
-                --
-                --                 if i < #breadcrumbs then
-                --                     relative_path = relative_path .. " > "
-                --                 end
-                --             end
-                --             return relative_path
-                --         end
-                --     },
-                -- }
-            },
+            winbar = {},
             extensions = {},
         })
     end,
