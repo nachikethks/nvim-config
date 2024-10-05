@@ -1,18 +1,18 @@
 vim.api.nvim_set_keymap('n', '<Esc>', '<CR>:noh<CR>', { silent = true })
 
 vim.api.nvim_set_keymap('n', '<C-a>', '<cmd> %y+ <cr>', { silent = true, desc = "Copy entire file" })
-vim.api.nvim_set_keymap('n', '<leader>nb', '<cmd> enew <cr>', { silent = true, desc = "buffer new" })
 
 
 -- Toggle line wrap
 vim.api.nvim_set_keymap('n', '<leader>wr', ':set wrap!<CR>', { noremap = true, silent = true, desc = "Toggle Line Wrap" })
 
 -- Buffer Navigation
-vim.keymap.set("n", "<Tab>", ":BufferLineCycleNext<CR>", { desc = "Next buffer", silent = true })   -- next buffer
-vim.keymap.set("n", "<S-Tab>", ":BufferLineCyclePrev<CR>", { desc = "Prev buffer", silent = true })   -- prev buffer
-vim.keymap.set("n", "<S-right>", ":BufferLineMoveNext<CR>", { desc = "Next buffer", silent = true })   -- next buffer
-vim.keymap.set("n", "<S-left>", ":BufferLineMovePrev<CR>", { desc = "Prev buffer", silent = true })   -- prev buffer
-vim.keymap.set("n", "<leader>bb", ":e #<CR>", { desc = "Previous buffer", silent = true }) -- switch to other buffer
+vim.keymap.set("n", "<Tab>", ":BufferLineCycleNext<CR>", { desc = "Next buffer", silent = true })
+vim.keymap.set("n", "<S-Tab>", ":BufferLineCyclePrev<CR>", { desc = "Prev buffer", silent = true })
+vim.keymap.set("n", "<S-right>", ":BufferLineMoveNext<CR>", { desc = "Shift Buffer Right", silent = true })
+vim.keymap.set("n", "<S-left>", ":BufferLineMovePrev<CR>", { desc = "Shift Buffer Left", silent = true })
+vim.keymap.set('n', '<leader>bn', '<cmd> enew <cr>', { silent = true, desc = "New buffer" })
+vim.keymap.set("n", "<leader>bb", ":e #<CR>", { desc = "Previous buffer", silent = true })
 vim.keymap.set('n', '<leader>bx', ":bdelete<CR>", { desc = "Close buffer", silent = true })
 
 -- Move selected text UP and DOWN
@@ -51,10 +51,10 @@ vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
 -- Select and paste without loosing copied text in register
-vim.keymap.set("x", "<leader>p", [["_dP]])
+vim.keymap.set("x", "<leader>p", [["_dP]], { desc = "Paste without losing copied text" })
 
 -- Delete text to void register
-vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
+vim.keymap.set("v", "<leader>d", [["_d]], {desc = "Delete to void register"})
 
 -- Build and execute
 local lang_maps = {

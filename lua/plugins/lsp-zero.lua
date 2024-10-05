@@ -174,7 +174,7 @@ return {
                 })
                 lsp_zero.highlight_symbol(client, bufnr)
 
-                vim.keymap.set('n', '<leader>hi', '<cmd>lua vim.lsp.buf.hover()<cr>',
+                vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>',
                     vim.tbl_extend('force', opts, { desc = "Display Signature Info" }))
 
                 vim.keymap.set('n', '<leader>ds', builtin.lsp_document_symbols,

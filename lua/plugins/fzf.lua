@@ -1,3 +1,1 @@
-return {
-    { "junegunn/fzf", build = "./install --all" },
-}
+return { "junegunn/fzf", build = "./install --all" }
