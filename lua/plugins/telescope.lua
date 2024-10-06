@@ -10,6 +10,18 @@ return {
     },
     opts = {
         defaults = {
+            file_ignore_patterns = {
+                "^.git/",
+                "^node_modules/",
+                "^target/",
+                "^build/",
+                "^dist/",
+                "^.cache/",
+                "^vendor/",
+                "^__pycache__",
+                "^venv/",
+                "^.venv/"
+            },
             layout_config = {
                 horizontal = { preview_width = 0.55 },
                 width = 0.9
